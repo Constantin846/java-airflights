@@ -4,7 +4,7 @@
 
 В качестве входных данных используется JSON файл, 
 в котором указывается список членов экипажа и список перелетов.
-Пример входного файла представлен здесь: [load-file.json](src/test/resources/load-file.json)
+Пример входного файла представлен здесь: [for-example-load-file.json](src/main/resources/for-example-load-file.json)
 
 В качестве выходных данных создается JSON файл,
 в котором для каждого члена экипажа показано суммарное время полета
@@ -22,7 +22,7 @@
 * Создайте исполняемый jar: mvn clean package
 * Запустите исполняемый jar:  
   * #### Вариант 1
-      + Положите входной файл в папку [src/main/resources](src/main/resources)
+      + Положите входной файл в папку [src/main/resources](src/main/resources) и назовите <span style="color:#59afe1">load-file.json</span>
       + Выполните команду: java -jar target/java-se-tz-airflights-1.0-SNAPSHOT.jar
       + Программа создаст stats-file.json файл в той же папке [src/main/resources](src/main/resources)
   * #### Вариант 2
