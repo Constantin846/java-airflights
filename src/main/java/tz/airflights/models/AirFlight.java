@@ -11,10 +11,10 @@ public class AirFlight {
     private LocalDateTime finishTime;
     private String startAirportName;
     private String finishAirportName;
-    private Set<CrewMember> crewSet;
+    private Set<CrewMember> crew;
 
     public AirFlight() {
-        crewSet = new HashSet<>();
+        this.crew = new HashSet<>();
     }
 
     public String getAircraftType() {
@@ -65,11 +65,11 @@ public class AirFlight {
         this.finishAirportName = finishAirportName;
     }
 
-    public Set<CrewMember> getCrewSet() {
-        return crewSet;
+    public Set<CrewMember> getCrew() {
+        return crew;
     }
 
-    public void setCrewSet(Set<CrewMember> crewSet) {
-        this.crewSet = crewSet;
+    public void setCrew(Set<CrewMember> crewSet) {
+        this.crew = crewSet;
     }
 }

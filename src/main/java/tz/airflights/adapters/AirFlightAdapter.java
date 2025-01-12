@@ -1,25 +1,21 @@
 package tz.airflights.adapters;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import tz.airflights.models.AirFlight;
 import tz.airflights.models.CrewMember;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 public class AirFlightAdapter extends TypeAdapter<AirFlight> {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy | HH:mm");
     private final DateTimeFormatter dateTimeFormatter;
-    private final Gson gson;
+    private final CrewMemberAdapter crewMemberAdapter;
 
     public AirFlightAdapter() {
         this(DATE_TIME_FORMATTER);
@@ -29,9 +25,9 @@ public class AirFlightAdapter extends TypeAdapter<AirFlight> {
         this(DateTimeFormatter.ofPattern(dateTimeFormat));
     }
 
-    private AirFlightAdapter(DateTimeFormatter dateTimeFormatter) {
+    public AirFlightAdapter(DateTimeFormatter dateTimeFormatter) {
         this.dateTimeFormatter = dateTimeFormatter;
-        this.gson = new GsonBuilder().serializeNulls().create();
+        this.crewMemberAdapter = new CrewMemberAdapter();
     }
 
     @Override
@@ -63,10 +59,19 @@ public class AirFlightAdapter extends TypeAdapter<AirFlight> {
                 case "finishAirportName":
                     airFlight.setFinishAirportName(jsonReader.nextString());
                     break;
-                case "crewSet":
-                    Type listCrewMember = new TypeToken<List<CrewMember>>(){}.getType();
-                    List<CrewMember> crewMembers = gson.fromJson(jsonReader.nextString(), listCrewMember);
-                    airFlight.setCrewSet(new HashSet<>(crewMembers));
+                case "crew":
+                    Set<CrewMember> crew = new HashSet<>();
+                    jsonReader.beginArray();
+
+                    while (jsonReader.hasNext()) {
+                        crew.add(crewMemberAdapter.read(jsonReader));
+                    }
+                    jsonReader.endArray();
+                    airFlight.setCrew(crew);
+                    //todo delete
+//                    Type listCrewMember = new TypeToken<List<CrewMember>>(){}.getType();
+//                    List<CrewMember> crewMembers = gson.fromJson(jsonReader.nextString(), listCrewMember);
+//                    airFlight.setCrew(new HashSet<>(crewMembers));
                     break;
                 default:
                     jsonReader.nextString();

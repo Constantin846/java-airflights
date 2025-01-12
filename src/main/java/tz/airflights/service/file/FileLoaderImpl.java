@@ -1,4 +1,4 @@
-package tz.airflights.service.loader;
+package tz.airflights.service.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileLoaderImpl implements FileLoader {
-    private static final String DEFAULT_FILE_PATH = "src\\main\\resources\\load-file.json"; //todo path
+    private static final String DEFAULT_FILE_PATH = "src\\main\\resources\\load-file.json";
     private final String filePath;
     private final Gson gson;
 
@@ -23,7 +23,6 @@ public class FileLoaderImpl implements FileLoader {
     }
 
     public FileLoaderImpl(String filePath) {
-        //todo path from main
         this.filePath = filePath;
         this.gson = new GsonBuilder().serializeNulls().setPrettyPrinting()
                 .registerTypeAdapter(CrewMember.class, new CrewMemberAdapter())
@@ -32,17 +31,14 @@ public class FileLoaderImpl implements FileLoader {
     }
 
     @Override
-    public void loadFile() {
+    public LoadedContent loadFile() {
+        String content = null;
         try {
-            String content = Files.readString(Path.of(filePath));
-            System.out.println(content); //todo delete
-
-            LoadedContent loadedContent = gson.fromJson(content, LoadedContent.class);
-
-            System.out.println(loadedContent); //todo delete
-
+            content = Files.readString(Path.of(filePath));
         } catch (IOException e) {
+            System.out.println("Error during file load!"); // todo delete
             throw new LoadFileException();
         }
+        return gson.fromJson(content, LoadedContent.class);
     }
 }

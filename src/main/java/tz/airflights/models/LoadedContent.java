@@ -3,8 +3,8 @@ package tz.airflights.models;
 import java.util.List;
 
 public class LoadedContent {
-    List<CrewMember> crew;
-    List<AirFlight> airFlights;
+    private List<CrewMember> crew;
+    private List<AirFlight> airFlights;
 
     public List<CrewMember> getCrew() {
         return crew;
