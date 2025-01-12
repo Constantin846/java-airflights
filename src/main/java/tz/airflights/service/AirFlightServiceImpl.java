@@ -35,6 +35,12 @@ public class AirFlightServiceImpl implements AirFlightService {
                 .createFilePath(loadFilePath));
     }
 
+    public AirFlightServiceImpl(String loadFilePath, String createFilePath) {
+        this.fileLoader = new FileLoaderImpl(loadFilePath);
+        this.statService = new StatServiceImpl();
+        this.fileCreator = new FileCreatorImpl(createFilePath);
+    }
+
     @Override
     public void start() {
         loadFile();

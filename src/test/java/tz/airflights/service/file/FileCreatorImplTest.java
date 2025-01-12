@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tz.airflights.adapters.CrewMemberAdapter;
+import tz.airflights.adapters.LocalDateTimeAdapter;
 import tz.airflights.adapters.MonthStatAdaptor;
 import tz.airflights.exceptions.LoadFileException;
 import tz.airflights.models.CrewMember;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ class FileCreatorImplTest {
         this.tempFile = Files.createTempFile("test-stats-file", ".json");
         this.fileCreator = new FileCreatorImpl(tempFile.toString());
         this.gson = new GsonBuilder().serializeNulls().setPrettyPrinting()
-                .registerTypeAdapter(CrewMember.class, new CrewMemberAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(MonthStat.class, new MonthStatAdaptor())
                 .create();
         this.mapper = new StatDtoMapper();
