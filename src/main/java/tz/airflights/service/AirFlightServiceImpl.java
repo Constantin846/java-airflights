@@ -36,7 +36,7 @@ public class AirFlightServiceImpl implements AirFlightService {
     }
 
     @Override
-    public void run() {
+    public void start() {
         loadFile();
         formStat();
         createFile();

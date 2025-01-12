@@ -1,0 +1,120 @@
+[
+  {
+    "crewMember": {
+      "id": 1,
+      "name": "Андрей",
+      "surname": "Андреев"
+    },
+    "monthStats": [
+      {
+        "month": "Январь",
+        "year": 2024,
+        "flightTimeInHour": 1,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": false,
+        "isFlightTimeMore8HoursForSomeDay": false
+      },
+      {
+        "month": "Январь",
+        "year": 2025,
+        "flightTimeInHour": 5,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": false,
+        "isFlightTimeMore8HoursForSomeDay": false
+      }
+    ]
+  },
+  {
+    "crewMember": {
+      "id": 2,
+      "name": "Борис",
+      "surname": "Борисов"
+    },
+    "monthStats": [
+      {
+        "month": "Январь",
+        "year": 2024,
+        "flightTimeInHour": 1,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": false,
+        "isFlightTimeMore8HoursForSomeDay": false
+      },
+      {
+        "month": "Январь",
+        "year": 2025,
+        "flightTimeInHour": 5,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": false,
+        "isFlightTimeMore8HoursForSomeDay": false
+      }
+    ]
+  },
+  {
+    "crewMember": {
+      "id": 3,
+      "name": "Владимир",
+      "surname": "Владимиров"
+    },
+    "monthStats": [
+      {
+        "month": "Март",
+        "year": 2024,
+        "flightTimeInHour": 42,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": true,
+        "isFlightTimeMore8HoursForSomeDay": false
+      }
+    ]
+  },
+  {
+    "crewMember": {
+      "id": 4,
+      "name": "Геннадий",
+      "surname": "Горький"
+    },
+    "monthStats": [
+      {
+        "month": "Март",
+        "year": 2024,
+        "flightTimeInHour": 42,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": true,
+        "isFlightTimeMore8HoursForSomeDay": false
+      }
+    ]
+  },
+  {
+    "crewMember": {
+      "id": 5,
+      "name": "Дмитрий",
+      "surname": "Дорогов"
+    },
+    "monthStats": [
+      {
+        "month": "Февраль",
+        "year": 2024,
+        "flightTimeInHour": 9,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": false,
+        "isFlightTimeMore8HoursForSomeDay": true
+      }
+    ]
+  },
+  {
+    "crewMember": {
+      "id": 6,
+      "name": "Евгений",
+      "surname": "Ельский"
+    },
+    "monthStats": [
+      {
+        "month": "Февраль",
+        "year": 2024,
+        "flightTimeInHour": 9,
+        "isFlightTimeMore80HoursForMonth": false,
+        "isFlightTimeMore36HoursForSomeWeek": false,
+        "isFlightTimeMore8HoursForSomeDay": true
+      }
+    ]
+  }
+]

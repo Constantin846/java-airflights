@@ -32,6 +32,21 @@ public class AirFlightAdapter extends TypeAdapter<AirFlight> {
 
     @Override
     public void write(JsonWriter jsonWriter, AirFlight airFlight) throws IOException {
+//        throw new AdapterException("AirFlight class must not be output data.\n" +
+//                "Write method of AirFlightAdapter class is not defined");
+        // todo delete;
+
+
+        jsonWriter.beginObject()
+                .name("aircraftType").value(airFlight.getAircraftType())
+                .name("aircraftNumber").value(airFlight.getAircraftNumber())
+                .name("startTime").value(airFlight.getStartTime().format(dateTimeFormatter))
+                .name("finishTime").value(airFlight.getFinishTime().format(dateTimeFormatter))
+                .name("startAirportName").value(airFlight.getStartAirportName())
+                .name("finishAirportName").value(airFlight.getFinishAirportName())
+                .beginArray()
+                .endArray()
+                .endObject();
     }
 
     @Override

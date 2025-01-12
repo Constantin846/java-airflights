@@ -7,7 +7,7 @@ import tz.airflights.models.CrewMember;
 
 import java.io.IOException;
 
-public class CrewMemberAdapter extends TypeAdapter<CrewMember> {
+public class CrewMemberAdapter extends TypeAdapter<CrewMember> { //todo delete
     @Override
     public void write(JsonWriter jsonWriter, CrewMember crewMember) throws IOException {
         jsonWriter.beginObject()
@@ -25,7 +25,7 @@ public class CrewMemberAdapter extends TypeAdapter<CrewMember> {
         while (jsonReader.hasNext()) {
             switch (jsonReader.nextName()) {
                 case "id":
-                    crewMember.setId(Long.parseLong(jsonReader.nextString()));
+                    crewMember.setId(jsonReader.nextLong());
                     break;
                 case "name":
                     crewMember.setName(jsonReader.nextString());

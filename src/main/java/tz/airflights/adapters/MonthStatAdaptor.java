@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import tz.airflights.models.stat.MonthStat;
 
 import java.io.IOException;
+import java.time.Duration;
 
 public class MonthStatAdaptor extends TypeAdapter<MonthStat> {
     @Override
@@ -22,6 +23,34 @@ public class MonthStatAdaptor extends TypeAdapter<MonthStat> {
 
     @Override
     public MonthStat read(JsonReader jsonReader) throws IOException {
-        return null;
+        MonthStat monthStat = new MonthStat();
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()) {
+            switch (jsonReader.nextName()) {
+                case "month":
+                    monthStat.setMonth(jsonReader.nextString());
+                    break;
+                case "year":
+                    monthStat.setYear(jsonReader.nextInt());
+                    break;
+                case "flightTimeInHour":
+                    monthStat.setFlightTime(Duration.ofHours(jsonReader.nextLong()));
+                    break;
+                case "isFlightTimeMore80HoursForMonth":
+                    monthStat.setFlightTimeMore80HoursForMonth(jsonReader.nextBoolean());
+                    break;
+                case "isFlightTimeMore36HoursForSomeWeek":
+                    monthStat.setFlightTimeMore36HoursForSomeWeek(jsonReader.nextBoolean());
+                    break;
+                case "isFlightTimeMore8HoursForSomeDay":
+                    monthStat.setFlightTimeMore8HoursForSomeDay(jsonReader.nextBoolean());
+                    break;
+                default:
+                    jsonReader.nextString();
+            }
+        }
+        jsonReader.endObject();
+        return monthStat;
     }
 }
