@@ -8,7 +8,7 @@ import tz.airflights.models.stat.Stat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class StatServiceImpl implements StatService {
         memberIdStatMap = crew.stream()
                 .collect(Collectors.toMap(CrewMember::getId, member -> {
                     Stat stat = new Stat();
-                    stat.setMember(member);
+                    stat.setCrewMember(member);
                     return stat;
                 }));
 
@@ -41,23 +41,19 @@ public class StatServiceImpl implements StatService {
             int year = dateTime.getYear();
             int month = dateTime.getMonthValue();
             int day = dateTime.getDayOfMonth();
+            YearMonth yearMonth = YearMonth.of(year, month);
 
             for (CrewMember member : airFlight.getCrew()) {
                 Stat stat = memberIdStatMap.get(member.getId());
-                Map<Integer, Map<Integer, MonthStat>> yearMonthStatMap = stat.getYearMonthStatMap();
+                Map<YearMonth, MonthStat> yearMonthStatMap = stat.getYearMonthStatMap();
 
-                if (!yearMonthStatMap.containsKey(year)) {
-                    yearMonthStatMap.put(year, new HashMap<>());
-                }
-                Map<Integer, MonthStat> monthStatMap = yearMonthStatMap.get(year);
-
-                if (!monthStatMap.containsKey(month)) {
+                if (!yearMonthStatMap.containsKey(yearMonth)) {
                     MonthStat newMonthStat = new MonthStat();
                     newMonthStat.setYear(year);
                     newMonthStat.setMonthNumber(month);
-                    monthStatMap.put(month, newMonthStat);
+                    yearMonthStatMap.put(yearMonth, newMonthStat);
                 }
-                MonthStat monthStat = monthStatMap.get(month);
+                MonthStat monthStat = yearMonthStatMap.get(yearMonth);
                 Map<Integer, DayStat> dayStatMap = monthStat.getDayStatMap();
 
                 if (dayStatMap.containsKey(day)) {
@@ -75,14 +71,11 @@ public class StatServiceImpl implements StatService {
 
     private void formMonthStats() {
         for (Stat stat : memberIdStatMap.values()) {
-            Map<Integer, Map<Integer, MonthStat>> yearMonthStatMap = stat.getYearMonthStatMap();
-
-            for (Map<Integer, MonthStat> monthStatMap : yearMonthStatMap.values()) {
-                for (MonthStat monthStat : monthStatMap.values()) {
-                    monthStat.setFlightTimeMore80HoursForMonth(checkFlightTimeMore80HoursForMonth(monthStat));
-                    monthStat.setFlightTimeMore36HoursForSomeWeek(checkFlightTimeMore36HoursForSomeWeek(monthStat));
-                    monthStat.setFlightTimeMore8HoursForSomeDay(checkFlightTimeMore8HoursForSomeDay(monthStat));
-                }
+            Map<YearMonth, MonthStat> yearMonthStatMap = stat.getYearMonthStatMap();
+            for (MonthStat monthStat : yearMonthStatMap.values()) {
+                monthStat.setFlightTimeMore80HoursForMonth(checkFlightTimeMore80HoursForMonth(monthStat));
+                monthStat.setFlightTimeMore36HoursForSomeWeek(checkFlightTimeMore36HoursForSomeWeek(monthStat));
+                monthStat.setFlightTimeMore8HoursForSomeDay(checkFlightTimeMore8HoursForSomeDay(monthStat));
             }
         }
     }
@@ -102,28 +95,31 @@ public class StatServiceImpl implements StatService {
 
     private boolean checkFlightTimeMore36HoursForSomeWeek(MonthStat monthStat) {
         Map<Integer, DayStat> dayStatMap = monthStat.getDayStatMap();
+        Duration flightTime = Duration.ZERO;
 
+        for (int i = 1; i <= COUNT_DAYS_IN_WEEK; i++) {
+            if (dayStatMap.containsKey(i)) {
+                flightTime = flightTime.plus(dayStatMap.get(i).getFlightTime());
+            }
+        }
+        if (checkDurationMore36Hours(flightTime)) return true;
 
+        YearMonth yearMonth = YearMonth.of(monthStat.getYear(), monthStat.getMonthNumber());
+
+        for (int i = COUNT_DAYS_IN_WEEK + 1; i <= yearMonth.lengthOfMonth(); i++) {
+            if (dayStatMap.containsKey(i - COUNT_DAYS_IN_WEEK)) {
+                flightTime = flightTime.minus(dayStatMap.get(i - COUNT_DAYS_IN_WEEK).getFlightTime());
+            }
+            if (dayStatMap.containsKey(i)) {
+                flightTime = flightTime.plus(dayStatMap.get(i).getFlightTime());
+            }
+            if (checkDurationMore36Hours(flightTime)) return true;
+        }
         return false;
-        // todo method
-        /*List<DayStat> dayStats = monthStat.getDayStatMap().values().stream()
-                .sorted(Comparator.comparingInt(DayStat::getDay))
-                .toList();
+    }
 
-        Duration flightTime = dayStats.stream()
-                .limit(COUNT_DAYS_IN_WEEK)
-                .map(DayStat::getFlightTime)
-                .reduce(Duration.ZERO, Duration::plus);
-
-        for (int i = 0; i < dayStats.size() - COUNT_DAYS_IN_WEEK; i++) {
-            flightTime.minus(dayStats.get())
-        }*/
-
-//        Duration flightTime = monthStat.getDayStatMap().values().stream()
-//                .map(DayStat::getFlightTime)
-//                .reduce(Duration.ZERO, Duration::plus);
-//        monthStat.setFlightTime(flightTime);
-//        return flightTime.toHours() > 80;
+    private boolean checkDurationMore36Hours(Duration duration) {
+        return duration.toHours() > THIRTY_SIX_HOURS;
     }
 
     private static final int EIGHT_HOURS = 8;

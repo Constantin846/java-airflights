@@ -68,10 +68,6 @@ public class AirFlightAdapter extends TypeAdapter<AirFlight> {
                     }
                     jsonReader.endArray();
                     airFlight.setCrew(crew);
-                    //todo delete
-//                    Type listCrewMember = new TypeToken<List<CrewMember>>(){}.getType();
-//                    List<CrewMember> crewMembers = gson.fromJson(jsonReader.nextString(), listCrewMember);
-//                    airFlight.setCrew(new HashSet<>(crewMembers));
                     break;
                 default:
                     jsonReader.nextString();

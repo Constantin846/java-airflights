@@ -8,6 +8,7 @@ import tz.airflights.service.file.FileCreator;
 import tz.airflights.service.file.FileCreatorImpl;
 import tz.airflights.service.file.FileLoader;
 import tz.airflights.service.file.FileLoaderImpl;
+import tz.airflights.service.file.FilePathCreator;
 import tz.airflights.service.stat.StatService;
 import tz.airflights.service.stat.StatServiceImpl;
 
@@ -30,7 +31,8 @@ public class AirFlightServiceImpl implements AirFlightService {
     public AirFlightServiceImpl(String loadFilePath) {
         this.fileLoader = new FileLoaderImpl(loadFilePath);
         this.statService = new StatServiceImpl();
-        this.fileCreator = new FileCreatorImpl(); // todo create path
+        this.fileCreator = new FileCreatorImpl(new FilePathCreator()
+                .createFilePath(loadFilePath));
     }
 
     @Override

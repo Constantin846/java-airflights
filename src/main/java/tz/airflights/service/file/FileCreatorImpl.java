@@ -12,12 +12,12 @@ import tz.airflights.models.stat.StatDto;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class FileCreatorImpl implements FileCreator {
-    private static final String DEFAULT_FILE_PATH = "src\\main\\resources\\stats-file.json"; //todo path
+    private static final String DEFAULT_FILE_PATH = "src\\main\\resources\\stats-file.json";
     private final String filePath;
     private final Gson gson;
 
@@ -46,15 +46,12 @@ public class FileCreatorImpl implements FileCreator {
             fileWriter.close();
 
         } catch (IOException e) {
-            System.out.println("Error during file save!"); // todo delete
             throw new SaveFileException();
-
         } finally {
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
                 } catch (IOException e) {
-                    System.out.println("Error during file save!"); // todo delete
                     throw new SaveFileException();
                 }
             }
@@ -65,11 +62,9 @@ public class FileCreatorImpl implements FileCreator {
         return stats.stream()
                 .map(stat -> {
                     StatDto statDto = new StatDto();
-                    statDto.setMember(stat.getMember());
+                    statDto.setCrewMember(stat.getCrewMember());
 
-                    Set<MonthStat> monthStats = stat.getYearMonthStatMap().values().stream()
-                            .flatMap(integerMonthStatMap -> integerMonthStatMap.values().stream())
-                            .collect(Collectors.toSet());
+                    Set<MonthStat> monthStats = new HashSet<>(stat.getYearMonthStatMap().values());
                     statDto.setMonthStats(monthStats);
                     return statDto;
                 }).toList();

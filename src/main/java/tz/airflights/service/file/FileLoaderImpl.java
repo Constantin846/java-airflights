@@ -32,11 +32,10 @@ public class FileLoaderImpl implements FileLoader {
 
     @Override
     public LoadedContent loadFile() {
-        String content = null;
+        String content;
         try {
             content = Files.readString(Path.of(filePath));
         } catch (IOException e) {
-            System.out.println("Error during file load!"); // todo delete
             throw new LoadFileException();
         }
         return gson.fromJson(content, LoadedContent.class);

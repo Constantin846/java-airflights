@@ -6,19 +6,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class StatDto {
-    private CrewMember member;
+    private CrewMember crewMember;
     private Set<MonthStat> monthStats;
 
     public StatDto() {
         this.monthStats = new HashSet<>();
     }
 
-    public CrewMember getMember() {
-        return member;
+    public CrewMember getCrewMember() {
+        return crewMember;
     }
 
-    public void setMember(CrewMember member) {
-        this.member = member;
+    public void setCrewMember(CrewMember crewMember) {
+        this.crewMember = crewMember;
     }
 
     public Set<MonthStat> getMonthStats() {
