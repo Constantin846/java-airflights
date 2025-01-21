@@ -30,5 +30,6 @@ public class Main {
             service = new AirFlightServiceImpl();
         }
         service.start();
+        System.out.println("Completed successfully");
     }
 }
